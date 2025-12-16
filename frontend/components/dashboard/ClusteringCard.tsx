@@ -63,9 +63,9 @@ export default function ClusteringCard() {
         <div>
           <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-purple-600" />
-            K-Means Clustering
+          Biofilter state classification
+
           </h3>
-          <p className="text-xs text-slate-500 mt-1">Biofilter state classification</p>
         </div>
         <button
           onClick={fetchCluster}

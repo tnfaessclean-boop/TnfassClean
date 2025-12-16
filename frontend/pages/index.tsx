@@ -77,7 +77,7 @@ export default function Home() {
   ];
 
   return (
-    <Layout title="Home" description="Bio-Digital Air Purification & Water Regeneration System">
+    <Layout title="Home" description="TnafesClean Air Purification & Water Regeneration System">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-emerald-900 to-slate-900 overflow-hidden pt-20">
         {/* Animated background elements */}

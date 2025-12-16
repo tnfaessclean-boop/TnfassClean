@@ -10,7 +10,7 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({
   children,
-  title = 'Bio-Digital System',
+  title = 'TnafesClean System',
   description = 'Environmental Monitoring and Analytics Platform',
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -18,7 +18,7 @@ export const Layout: React.FC<LayoutProps> = ({
   return (
     <>
       <Head>
-        <title>{title} | Bio-Digital</title>
+        <title>{title} | TnafesClean</title>
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content={title} />
@@ -32,7 +32,7 @@ export const Layout: React.FC<LayoutProps> = ({
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition">
                 <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-                  Bio-Digital
+                  TnafesClean
                 </span>
               </div>
             </Link>
@@ -81,7 +81,7 @@ export const Layout: React.FC<LayoutProps> = ({
           <div className="max-w-7xl mx-auto px-4 md:px-6">
             <div className="grid md:grid-cols-4 gap-8 mb-8">
               <div>
-                <h4 className="font-bold text-lg mb-4">Bio-Digital System</h4>
+                <h4 className="font-bold text-lg mb-4">TnafesClean System</h4>
                 <p className="text-slate-400">Environmental monitoring and analytics platform.</p>
               </div>
               <div>
@@ -108,7 +108,7 @@ export const Layout: React.FC<LayoutProps> = ({
               </div>
             </div>
             <div className="border-t border-slate-700 pt-8 text-center text-slate-400">
-              <p>&copy; 2025 Bio-Digital System. All rights reserved.</p>
+              <p>&copy; 2025 TnafesClean System. All rights reserved.</p>
             </div>
           </div>
         </footer>

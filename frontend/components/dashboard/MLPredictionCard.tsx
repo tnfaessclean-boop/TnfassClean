@@ -20,8 +20,8 @@ export default function MLPredictionCard() {
   const fetchPrediction = async () => {
     try {
       setLoading(true);
-      // Simulate LSTM prediction
-      const mockInput = [28.5, 28.6, 28.7, 28.8]; // Temperature sequence
+      // Simulate LSTM prediction (PM2.5 sequence in µg/m³)
+      const mockInput = [45.0, 46.2, 44.8, 47.1]; // PM2.5 sequence
       const response = await fetch('http://localhost:3001/api/ml/predict/air-quality', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -36,7 +36,7 @@ export default function MLPredictionCard() {
       console.error('Prediction error:', err);
       // Fallback to mock data
       setPrediction({
-        prediction: 28.9,
+        prediction: 48.9,
         confidence: 0.87,
       });
       setError(null);
@@ -49,11 +49,10 @@ export default function MLPredictionCard() {
     <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
             <Brain className="w-5 h-5 text-blue-600" />
-            LSTM Prediction
+            AI-powered PM2.5 forecast
           </h3>
-          <p className="text-xs text-slate-500 mt-1">AI-powered temperature forecast</p>
         </div>
         <button
           onClick={fetchPrediction}
@@ -74,9 +73,9 @@ export default function MLPredictionCard() {
         <div className="space-y-4">
           {/* Prediction Value */}
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
-            <p className="text-sm text-blue-700 font-medium mb-2">Next Temperature Reading</p>
+            <p className="text-sm text-blue-700 font-medium mb-2">Next PM2.5 Reading</p>
             <p className="text-4xl font-bold text-blue-600 mb-1">
-              {prediction.prediction.toFixed(1)}°C
+              {prediction.prediction.toFixed(1)} µg/m³
             </p>
             <p className="text-xs text-blue-600">Predicted value based on historical patterns</p>
           </div>
@@ -107,7 +106,7 @@ export default function MLPredictionCard() {
           {/* Info */}
           <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
             <p className="text-xs text-slate-700">
-              <strong>Model:</strong> LSTM Neural Network • <strong>Target:</strong> Temperature
+              <strong>Model:</strong> LSTM Neural Network • <strong>Target:</strong> PM2.5 (µg/m³)
             </p>
           </div>
         </div>

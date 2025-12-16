@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout } from '@/components/Layout';
 import dynamic from 'next/dynamic';
 import MLPredictionCard from '@/components/dashboard/MLPredictionCard';
 import ClusteringCard from '@/components/dashboard/ClusteringCard';
-import MLModelsStatus from '@/components/dashboard/MLModelsStatus';
+import { dashboardAPI } from '@/lib/api/endpoints';
 
 // Dynamically import Chart.js to avoid SSR issues
 const Chart = dynamic(() => import('react-chartjs-2').then(mod => mod.Chart), { ssr: false });
@@ -44,6 +44,152 @@ export default function Dashboard() {
       filterEfficiency: Math.floor(Math.random() * 20) + 80,
     });
   };
+
+  // --- Real-time / simulation controls ---
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const retryDelayRef = useRef<number>(2000);
+  const intervalRef = useRef<number | null>(null);
+
+  // staged override refs to prevent polling from overwriting simulated alerts
+  const overrideRef = useRef(false);
+  const timersRef = useRef<number[]>([]);
+  const sequenceIntervalRef = useRef<number | null>(null);
+
+  const fetchMetrics = async () => {
+    try {
+      const res = await dashboardAPI.getMetrics();
+      const d = res.data;
+      if (d && d.air && d.water) {
+        setDashboardData((prev) => ({
+          ...prev,
+          // if an override is active, keep those staged values
+          co2: overrideRef.current ? prev.co2 : d.air.co2 ?? prev.co2,
+          pm25: overrideRef.current ? prev.pm25 : d.air.pm25 ?? prev.pm25,
+          so2: d.air.so2 ?? prev.so2,
+          temp: overrideRef.current ? prev.temp : d.air.temperature ?? prev.temp,
+          humidity: d.air.humidity ?? prev.humidity,
+          o2: d.air.o2 ?? prev.o2,
+          waterReservoir: d.water.reservoir ?? prev.waterReservoir,
+          irrigationFlow: d.water.flow ?? prev.irrigationFlow,
+          waterGeneration: d.water.generation ?? prev.waterGeneration,
+          waterPurity: d.water.purity ?? prev.waterPurity,
+        }));
+      } else {
+        refreshDashboard();
+      }
+      retryDelayRef.current = 2000;
+    } catch (err) {
+      console.error('fetchMetrics error', err);
+      // fallback to local random data
+      refreshDashboard();
+      // backoff
+      retryDelayRef.current = Math.min(retryDelayRef.current * 1.5, 30000);
+    }
+  };
+
+  useEffect(() => {
+    const startPolling = () => {
+      if (intervalRef.current) window.clearInterval(intervalRef.current);
+      intervalRef.current = window.setInterval(() => {
+        if (!document.hidden && !overrideRef.current) fetchMetrics();
+      }, retryDelayRef.current);
+    };
+
+    if (autoRefresh) {
+      fetchMetrics();
+      startPolling();
+    }
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        if (intervalRef.current) {
+          window.clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      } else if (autoRefresh) {
+        fetchMetrics();
+        startPolling();
+      }
+    };
+
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      if (intervalRef.current) window.clearInterval(intervalRef.current);
+      // clear staged timers
+      timersRef.current.forEach((t) => window.clearTimeout(t));
+      timersRef.current = [];
+      overrideRef.current = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoRefresh]);
+
+  // Simulate staged alert: PM2.5 (5s) -> CO2 (2s) -> Temperature (2s)
+  const startStagedAlertSequence = (opts?: { pm25?: number; co2?: number; temp?: number }) => {
+    if (overrideRef.current) return; // already running
+    overrideRef.current = true;
+    const pm25Peak = opts?.pm25 ?? 80;
+    const co2Peak = opts?.co2 ?? 700;
+    const tempPeak = opts?.temp ?? 30;
+
+    const originals = { ...dashboardData };
+
+    // clear any previous timers
+    timersRef.current.forEach((t) => window.clearTimeout(t));
+    timersRef.current = [];
+
+    // Step 1: PM2.5 high for 5s
+    setDashboardData((prev) => ({ ...prev, pm25: pm25Peak }));
+    const t1 = window.setTimeout(() => {
+      // Step 2: CO2 high for 2s
+      setDashboardData((prev) => ({ ...prev, pm25: originals.pm25, co2: co2Peak }));
+      const t2 = window.setTimeout(() => {
+        // Step 3: Temp high for 2s
+        setDashboardData((prev) => ({ ...prev, co2: originals.co2, temp: tempPeak }));
+        const t3 = window.setTimeout(() => {
+          // revert all
+          setDashboardData((prev) => ({ ...prev, pm25: originals.pm25, co2: originals.co2, temp: originals.temp }));
+          overrideRef.current = false;
+          timersRef.current = timersRef.current.filter((x) => x !== t3);
+        }, 2000);
+        timersRef.current.push(t3);
+        timersRef.current = timersRef.current.filter((x) => x !== t2);
+      }, 2000);
+      timersRef.current.push(t2);
+      timersRef.current = timersRef.current.filter((x) => x !== t1);
+    }, 5000);
+    timersRef.current.push(t1);
+  };
+
+  // Auto-run the staged sequence periodically when auto-refresh is enabled
+  useEffect(() => {
+    // clear any existing sequence interval
+    if (sequenceIntervalRef.current) {
+      window.clearInterval(sequenceIntervalRef.current);
+      sequenceIntervalRef.current = null;
+    }
+
+    if (autoRefresh) {
+      // start one run shortly after enabling
+      const startTimeout = window.setTimeout(() => {
+        if (!overrideRef.current) startStagedAlertSequence();
+      }, 5000);
+      timersRef.current.push(startTimeout as unknown as number);
+
+      // then schedule periodic runs every 30s
+      sequenceIntervalRef.current = window.setInterval(() => {
+        if (!overrideRef.current) startStagedAlertSequence();
+      }, 30000);
+    }
+
+    return () => {
+      if (sequenceIntervalRef.current) {
+        window.clearInterval(sequenceIntervalRef.current);
+        sequenceIntervalRef.current = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoRefresh]);
 
   const DashboardCard = ({ title, value, unit, icon, status = 'normal', progress = 80 }) => (
     <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl hover:translate-y-[-5px] transition-all duration-300">
@@ -99,21 +245,16 @@ export default function Dashboard() {
                 Real-Time Monitoring
               </p>
             </div>
-            <button
-              onClick={refreshDashboard}
-              className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-semibold rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300"
-            >
-              🔄 Refresh Data
-            </button>
+
           </div>
 
           {/* AI Predictions Section */}
           <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-10">🤖 AI Predictions & Analytics</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-2  gap-6 mb-12">
             <MLPredictionCard />
             <ClusteringCard />
-            <MLModelsStatus />
           </div>
+          {/* header controls removed: simulation and auto-refresh disabled */}
 
           {/* Air Quality Metrics */}
           <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-10">Air Quality Metrics</h2>

@@ -125,13 +125,13 @@ export default function Subsystems() {
   ];
 
   return (
-    <Layout title="Subsystems" description="Explore the technical specifications of our bio-digital system">
+    <Layout title="Subsystems" description="Explore the technical specifications of our TnafesClean system">
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 text-center bg-gradient-to-b from-emerald-50 to-white">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-6xl font-bold text-slate-900 mb-6">Technical Specifications</h1>
           <p className="text-xl text-slate-600">
-            Deep dive into the subsystems and components that power the Bio-Digital Air Purification & Water Regeneration System.
+            Deep dive into the subsystems and components that power the TnafesClean Air Purification & Water Regeneration System.
           </p>
         </div>
       </section>

@@ -1,6 +1,6 @@
 {
   "model_type": "LSTM",
-  "prediction_target": "temperature",
+  "prediction_target": "PM2.5",
   "input_shape": 4,
   "rmse": 27.581554412841797,
   "scaler_type": "MinMaxScaler",

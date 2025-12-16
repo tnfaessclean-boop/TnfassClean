@@ -145,11 +145,11 @@ export default function HowItWorks() {
   ];
 
   return (
-    <Layout title="How It Works" description="Discover the 11-step bio-digital workflow that transforms polluted air">
+    <Layout title="How It Works" description="Discover the 11-step TnafesClean workflow that transforms polluted air">
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 text-center bg-gradient-to-b from-emerald-50 to-white">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-6xl font-bold text-slate-900 mb-6">Bio-Digital Air Purification System Workflow</h1>
+          <h1 className="text-6xl font-bold text-slate-900 mb-6">TnafesClean Air Purification System Workflow</h1>
           <p className="text-xl text-slate-600">
             Discover the 11-step integrated workflow that transforms polluted air into clean oxygen, generates fresh water, powers intelligent analytics, and creates circular economy products.
           </p>
@@ -159,7 +159,7 @@ export default function HowItWorks() {
       {/* Interactive Timeline */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-slate-900 mb-4 text-center">The 11-Step Bio-Digital Workflow</h2>
+          <h2 className="text-4xl font-bold text-slate-900 mb-4 text-center">The 11-Step TnafesClean Workflow</h2>
           <p className="text-center text-slate-600 mb-12 text-lg">
             An integrated system combining biological filtration, water regeneration, AI analytics, and circular economy
           </p>
@@ -248,7 +248,7 @@ export default function HowItWorks() {
 
             <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 border border-purple-200 flex flex-col justify-center">
               <div className="text-5xl mb-4">⚙️</div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-3">Bio-Digital Processing</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-3">TnafesClean Processing</h3>
               <p className="text-slate-700 text-lg">
                 11 integrated steps combining biological filtration and AI analytics
               </p>

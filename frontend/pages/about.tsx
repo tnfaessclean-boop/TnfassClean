@@ -45,11 +45,11 @@ export default function About() {
   ];
 
   return (
-    <Layout title="About" description="About the Bio-Digital Environmental Monitoring System">
+    <Layout title="About" description="About the TnafesClean Environmental Monitoring System">
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 text-center bg-gradient-to-b from-emerald-50 to-white">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-6xl font-bold text-slate-900 mb-6">About Bio-Digital System</h1>
+          <h1 className="text-6xl font-bold text-slate-900 mb-6">About TnafesClean System</h1>
           <p className="text-2xl text-slate-600">Environmental monitoring through technology and data.</p>
         </div>
       </section>
