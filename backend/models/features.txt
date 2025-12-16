@@ -1,0 +1,9 @@
+PM2.5
+CO2
+SO2
+Moss_Humidity
+Pump_Activity
+Solar_Power
+PM25_rate
+Moss_Dryness
+Activity_Ratio

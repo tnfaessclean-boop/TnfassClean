@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3001
+    depends_on:
+      - backend
+    networks:
+      - bio-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - MONGODB_URI=mongodb://mongodb:27017/bio-digital
+      - CORS_ORIGIN=http://localhost:3000
+    depends_on:
+      - mongodb
+    networks:
+      - bio-network
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=bio-digital
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - bio-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  bio-network:
+    driver: bridge

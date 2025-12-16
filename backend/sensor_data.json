@@ -1,0 +1,90 @@
+[
+    {
+        "Gaz": 138,
+        "luminosity": 5.83,
+        "Soil_moisture": 84,
+        "temperature": 28.5,
+        "humidity": 90.6,
+        "date_heure": "02:03:05 14/12/2025"
+    },
+    {
+        "Gaz": 138,
+        "luminosity": 5.83,
+        "Soil_moisture": 84,
+        "temperature": 28.6,
+        "humidity": 90.6,
+        "date_heure": "02:03:08 14/12/2025"
+    },
+    {
+        "Gaz": 137,
+        "luminosity": 5.83,
+        "Soil_moisture": 84,
+        "temperature": 28.6,
+        "humidity": 90.7,
+        "date_heure": "02:03:10 14/12/2025"
+    },
+    {
+        "Gaz": 138,
+        "luminosity": 7.5,
+        "Soil_moisture": 84,
+        "temperature": 28.7,
+        "humidity": 90.9,
+        "date_heure": "02:03:12 14/12/2025"
+    },
+    {
+        "Gaz": 138,
+        "luminosity": 7.5,
+        "Soil_moisture": 84,
+        "temperature": 28.8,
+        "humidity": 91.1,
+        "date_heure": "02:03:14 14/12/2025"
+    },
+    {
+        "Gaz": 138,
+        "luminosity": 7.5,
+        "Soil_moisture": 84,
+        "temperature": 28.8,
+        "humidity": 91.2,
+        "date_heure": "02:03:17 14/12/2025"
+    },
+    {
+        "Gaz": 139,
+        "luminosity": 7.5,
+        "Soil_moisture": 84,
+        "temperature": 28.8,
+        "humidity": 91.4,
+        "date_heure": "02:03:19 14/12/2025"
+    },
+    {
+        "Gaz": 139,
+        "luminosity": 6.67,
+        "Soil_moisture": 84,
+        "temperature": 28.9,
+        "humidity": 91.5,
+        "date_heure": "02:03:21 14/12/2025"
+    },
+    {
+        "Gaz": 139,
+        "luminosity": 6.67,
+        "Soil_moisture": 84,
+        "temperature": 28.9,
+        "humidity": 91.6,
+        "date_heure": "02:03:23 14/12/2025"
+    },
+    {
+        "Gaz": 138,
+        "luminosity": 7.5,
+        "Soil_moisture": 84,
+        "temperature": 29.0,
+        "humidity": 91.7,
+        "date_heure": "02:03:26 14/12/2025"
+    },
+    {
+        "Gaz": 138,
+        "luminosity": 7.5,
+        "Soil_moisture": 84,
+        "temperature": 29.0,
+        "humidity": 91.9,
+        "date_heure": "02:03:28 14/12/2025"
+    }
+]
